@@ -1,0 +1,42 @@
+---
+// =============================================================================
+// MAPA DE PROYECTOS (SVG)
+// -----------------------------------------------------------------------------
+// Dibujo inspirado en el logo: un nodo central (el grupo) unido a un nodo
+// grande por proyecto, cada uno con nodos satélite pequeños.
+// Cada nodo grande es un enlace a la página del proyecto.
+// =============================================================================
+import type { CollectionEntry } from 'astro:content';
+import { url } from '../../lib/url';
+
+interface Props { proyectos: CollectionEntry<'proyectos'>[] }
+const { proyectos } = Astro.props;
+
+// Posición de cada proyecto (en el mismo orden que `orden` del Markdown).
+// Si agregas un 4.º proyecto, añade aquí una posición más.
+const pos = [{ x: 130, y: 120 }, { x: 370, y: 150 }, { x: 235, y: 320 }];
+// Satélites alrededor de cada nodo: [desplazamiento x, desplazamiento y, radio]
+const sat = [[-64, -44, 9], [60, -54, 6], [72, 30, 11], [-60, 48, 7]];
+// Nodo central (el grupo)
+const hub = { x: 245, y: 215 };
+---
+<svg class="graph" viewBox="0 0 480 430" role="group" aria-label="Mapa de los proyectos del grupo">
+  <!-- Líneas del centro a cada proyecto (se dibujan con animación) -->
+  {proyectos.map((_, i) => <line class="edge" x1={hub.x} y1={hub.y} x2={pos[i].x} y2={pos[i].y} />)}
+
+  <!-- Nodos satélite (decorativos) -->
+  {proyectos.map((p, i) => sat.map(([dx, dy, r]) => (
+    <circle class={`sat c-${p.data.color}`} cx={pos[i].x + dx} cy={pos[i].y + dy} r={r} />
+  )))}
+
+  <!-- Nodo central -->
+  <circle cx={hub.x} cy={hub.y} r="13" fill="var(--navy)" />
+
+  <!-- Nodos de proyecto (enlaces) -->
+  {proyectos.map((p, i) => (
+    <a href={url(`/proyectos/${p.id}/`)} aria-label={p.data.titulo}>
+      <circle class={`node c-${p.data.color}`} cx={pos[i].x} cy={pos[i].y} r="46" />
+      <text x={pos[i].x} y={pos[i].y + 72} text-anchor="middle">{p.data.titulo}</text>
+    </a>
+  ))}
+</svg>

@@ -1,0 +1,32 @@
+---
+// =============================================================================
+// SECCIÓN 2 · NOSOTROS
+// Texto: src/content/secciones/nosotros.md
+// Las cifras (proyectos e integrantes) se calculan solas a partir del contenido.
+// =============================================================================
+import { getEntry, getCollection, render } from 'astro:content';
+import TituloSeccion from '../comunes/TituloSeccion.astro';
+
+const seccion = await getEntry('secciones', 'nosotros');
+if (!seccion) throw new Error('Falta src/content/secciones/nosotros.md');
+const { Content } = await render(seccion);
+
+const totalProyectos = (await getCollection('proyectos')).length;
+const totalIntegrantes = (await getCollection('integrantes')).length;
+// Temas distintos = etiquetas únicas de todos los proyectos
+const totalTemas = new Set((await getCollection('proyectos')).flatMap((p) => p.data.etiquetas)).size;
+---
+<section id="nosotros" class="section split" aria-labelledby="nosotros-titulo">
+  <!-- ----- Texto (Markdown) ----- -->
+  <div>
+    <TituloSeccion id="nosotros-titulo" titulo={seccion.data.titulo} etiqueta={seccion.data.etiqueta} />
+    <div class="prose"><Content /></div>
+  </div>
+
+  <!-- ----- Cifras ----- -->
+  <dl class="stats">
+    <div class="stat stat-blue"><dt>Proyectos activos</dt><dd>{totalProyectos}</dd></div>
+    <div class="stat stat-green"><dt>Integrantes</dt><dd>{totalIntegrantes}</dd></div>
+    <div class="stat stat-amber"><dt>Temas de trabajo</dt><dd>{totalTemas}</dd></div>
+  </dl>
+</section>

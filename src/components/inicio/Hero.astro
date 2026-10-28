@@ -1,0 +1,31 @@
+---
+// =============================================================================
+// SECCIÓN 1 · HERO (portada)
+// Título principal, texto de presentación, botones y el mapa de proyectos.
+// =============================================================================
+import type { CollectionEntry } from 'astro:content';
+import MapaProyectos from './MapaProyectos.astro';
+import { url } from '../../lib/url';
+import { SITIO } from '../../config/sitio';
+
+interface Props { proyectos: CollectionEntry<'proyectos'>[] }
+const { proyectos } = Astro.props;
+---
+<section class="hero" aria-labelledby="hero-titulo">
+  <!-- ----- Texto ----- -->
+  <div>
+    <p class="kicker">Grupo de investigación · {SITIO.nombre}</p>
+    <h1 id="hero-titulo">{SITIO.nombreCompleto}</h1>
+    <p>
+      Este período trabajamos en {proyectos.length} proyectos para explorar, reunir y
+      entender datos de forma clara, reproducible y responsable.
+    </p>
+    <div class="actions">
+      <a class="btn fill" href="#proyectos">Ver proyectos</a>
+      <a class="btn line" href={url('/integrantes/')}>Conocer al equipo</a>
+    </div>
+  </div>
+
+  <!-- ----- Mapa interactivo (SVG) ----- -->
+  <MapaProyectos proyectos={proyectos} />
+</section>

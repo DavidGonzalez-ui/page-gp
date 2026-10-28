@@ -1,0 +1,28 @@
+---
+// =============================================================================
+// PÁGINA DE INTEGRANTES  ( /integrantes/ )
+// Agrupa a las personas por proyecto. Datos: src/content/integrantes/*.md
+// =============================================================================
+import Base from '../layouts/Base.astro';
+import ListaEquipo from '../components/comunes/ListaEquipo.astro';
+import { getCollection } from 'astro:content';
+
+const proyectos = (await getCollection('proyectos')).sort((a, b) => a.data.orden - b.data.orden);
+const integrantes = await getCollection('integrantes');
+---
+<Base title="Integrantes | KBS">
+  <section class="page">
+    <!-- ----- Encabezado ----- -->
+    <p class="kicker">Equipo</p>
+    <h1>Integrantes</h1>
+    <p class="lead">Las personas que trabajan en cada proyecto.</p>
+
+    <!-- ----- Un bloque por proyecto ----- -->
+    {proyectos.map((p) => (
+      <>
+        <h2><span class={`badge c-${p.data.color}`}></span>{p.data.titulo}</h2>
+        <ListaEquipo integrantes={integrantes.filter((i) => i.data.proyecto === p.id)} conBio />
+      </>
+    ))}
+  </section>
+</Base>

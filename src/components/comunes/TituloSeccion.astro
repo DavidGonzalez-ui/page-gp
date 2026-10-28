@@ -1,0 +1,17 @@
+---
+// =============================================================================
+// TÍTULO DE SECCIÓN (reutilizable)
+// Etiqueta pequeña de color + título grande. Uso:
+//   <TituloSeccion etiqueta="Nosotros" titulo="Sobre el grupo" />
+// =============================================================================
+interface Props {
+  titulo: string;
+  etiqueta?: string;
+  id?: string;      // id del <h2> para aria-labelledby
+}
+const { titulo, etiqueta, id } = Astro.props;
+---
+<header class="sec-head">
+  {etiqueta && <p class="kicker">{etiqueta}</p>}
+  <h2 id={id}>{titulo}</h2>
+</header>

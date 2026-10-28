@@ -1,0 +1,33 @@
+---
+// =============================================================================
+// LISTA DE EQUIPO (reutilizable)
+// Muestra integrantes con nombre, rol, enlace a GitHub y, opcionalmente,
+// la biografía escrita en su archivo Markdown.
+// Se usa en /integrantes/ y en la página de cada proyecto.
+// =============================================================================
+import type { CollectionEntry } from 'astro:content';
+import { render } from 'astro:content';
+
+interface Props {
+  integrantes: CollectionEntry<'integrantes'>[];
+  conBio?: boolean;   // true = muestra el texto del .md de cada persona
+}
+const { integrantes, conBio = false } = Astro.props;
+
+// Si se pide la biografía, se renderiza el Markdown de cada integrante.
+const lista = await Promise.all(
+  integrantes.map(async (i) => ({ ...i, Bio: conBio ? (await render(i)).Content : null }))
+);
+---
+<ul class="team">
+  {lista.map((i) => (
+    <li>
+      <strong>{i.data.nombre}</strong>
+      <span class="role">{i.data.rol}</span>
+      {i.data.github && (
+        <> · <a href={`https://github.com/${i.data.github}`} rel="noopener">GitHub</a></>
+      )}
+      {i.Bio && <div class="bio"><i.Bio /></div>}
+    </li>
+  ))}
+</ul>

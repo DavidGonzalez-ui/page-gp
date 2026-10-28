@@ -1,0 +1,27 @@
+---
+// =============================================================================
+// CABECERA
+// -----------------------------------------------------------------------------
+// Logo destacado (tarjeta blanca con sombra y franja de colores del logo)
+// y menú principal. Los enlaces del menú se editan en src/config/sitio.ts
+// =============================================================================
+import { url } from '../../lib/url';
+import { MENU, SITIO } from '../../config/sitio';
+---
+<header class="site-header">
+  <div class="wrap bar">
+    <!-- ----- Logo ----- -->
+    <a class="brand" href={url('/')} aria-label={`${SITIO.nombre}, inicio`}>
+      <img
+        src={url('/logo-transparente.png')}
+        alt={`${SITIO.nombre}, ${SITIO.nombreCompleto}`}
+        width="640" height="356"
+      />
+    </a>
+
+    <!-- ----- Menú principal ----- -->
+    <nav aria-label="Principal">
+      {MENU.map((item) => <a href={url(item.href)}>{item.texto}</a>)}
+    </nav>
+  </div>
+</header>

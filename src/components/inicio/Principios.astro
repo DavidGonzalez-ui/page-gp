@@ -1,0 +1,25 @@
+---
+// =============================================================================
+// SECCIÓN 4 · CÓMO TRABAJAMOS
+// Tarjetas definidas en el frontmatter de src/content/secciones/principios.md
+// (campo `puntos`). Los colores rotan: azul, verde, ámbar (los del logo).
+// =============================================================================
+import { getEntry } from 'astro:content';
+import TituloSeccion from '../comunes/TituloSeccion.astro';
+
+const seccion = await getEntry('secciones', 'principios');
+if (!seccion) throw new Error('Falta src/content/secciones/principios.md');
+const colores = ['blue', 'green', 'amber'];
+---
+<section id="principios" class="section" aria-labelledby="principios-titulo">
+  <TituloSeccion id="principios-titulo" titulo={seccion.data.titulo} etiqueta={seccion.data.etiqueta} />
+  <ol class="cards">
+    {seccion.data.puntos.map((punto, i) => (
+      <li class={`card card-${colores[i % colores.length]}`}>
+        <span class="card-num">{String(i + 1).padStart(2, '0')}</span>
+        <h3>{punto.titulo}</h3>
+        <p>{punto.texto}</p>
+      </li>
+    ))}
+  </ol>
+</section>

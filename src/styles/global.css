@@ -1,0 +1,298 @@
+/* =============================================================================
+   ESTILOS GLOBALES · KBS
+   -----------------------------------------------------------------------------
+   Índice
+     1. Variables (colores, sombras) y modo oscuro
+     2. Base (reset, tipografía, enlaces)
+     3. Utilidades (contenedor, accesibilidad)
+     4. Cabecera y LOGO
+     5. Botones y etiquetas
+     6. Sección: Hero + mapa SVG
+     7. Secciones comunes (título, texto Markdown)
+     8. Sección: Nosotros (cifras)
+     9. Sección: Proyectos (lista)
+    10. Sección: Cómo trabajamos (tarjetas)
+    11. Sección: Contacto (tarjeta GitHub)
+    12. Páginas internas (proyecto, integrantes)
+    13. Pie de página
+    14. Responsive y movimiento reducido
+   ========================================================================== */
+
+
+/* =============================================================================
+   1. VARIABLES
+   Los colores --blue, --green y --amber salen del logo KBS.
+   ========================================================================== */
+:root {
+  --paper: #F7F7F7;  --surface: #FFFFFF;
+  --ink: #10283D;    --muted: #4C6378;   --line: #D5DCE3;
+  --navy: #00497A;   --link: #00497A;
+  --blue: #55A5F7;   --green: #6DBB3F;   --amber: #FBBB12;
+  --logo-bg: #FFFFFF;                                   /* fondo de la tarjeta del logo */
+  --shadow: 0 1px 2px rgba(16, 40, 61, .06), 0 8px 24px rgba(16, 40, 61, .10);
+  --shadow-lg: 0 2px 4px rgba(16, 40, 61, .08), 0 16px 40px rgba(0, 73, 122, .18);
+  --radius: 14px;
+  --header-bg: rgba(247, 247, 247, .88);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #0D1B2A;  --surface: #13263A;
+    --ink: #E8EEF4;    --muted: #9FB2C4;   --line: #24384D;
+    --navy: #7FC0FF;   --link: #7FC0FF;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .35);
+    --shadow-lg: 0 2px 4px rgba(0, 0, 0, .3), 0 16px 40px rgba(85, 165, 247, .22);
+    --header-bg: rgba(13, 27, 42, .88);
+    /* --logo-bg se mantiene blanco: el "KBS" azul marino necesita fondo claro */
+  }
+}
+
+
+/* =============================================================================
+   2. BASE
+   ========================================================================== */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 130px; }   /* compensa la cabecera fija */
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 1.05rem/1.6 'Figtree', system-ui, sans-serif; }
+h1, h2, h3 { font-family: 'Bricolage Grotesque', 'Figtree', sans-serif; line-height: 1.12; margin: 0 0 .6em; }
+a { color: var(--link); }
+img { max-width: 100%; }
+:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; border-radius: 4px; }
+
+
+/* =============================================================================
+   3. UTILIDADES
+   ========================================================================== */
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 1.25rem; }
+
+/* Enlace "Saltar al contenido": invisible hasta que recibe foco con teclado */
+.skip { position: absolute; left: 1rem; top: -3rem; z-index: 100; background: var(--navy); color: var(--paper); padding: .5rem 1rem; border-radius: 8px; }
+.skip:focus { top: 1rem; }
+
+
+/* =============================================================================
+   4. CABECERA Y LOGO
+   La cabecera queda fija arriba al hacer scroll. El logo va en una tarjeta
+   blanca con sombra y una franja inferior con los tres colores del logo,
+   para que destaque sobre el fondo (antes se confundía con él).
+   ========================================================================== */
+.site-header {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--header-bg);
+  backdrop-filter: saturate(1.4) blur(10px);
+  -webkit-backdrop-filter: saturate(1.4) blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: .75rem; }
+
+/* ----- Tarjeta del logo ----- */
+.brand {
+  position: relative; display: block; flex: none;
+  background: var(--logo-bg);
+  border-radius: var(--radius);
+  padding: 8px 16px 12px;
+  line-height: 0;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+/* Franja tricolor (azul · verde · ámbar) en la base de la tarjeta */
+.brand::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px;
+  background: linear-gradient(90deg, var(--blue) 0 33.3%, var(--green) 33.3% 66.6%, var(--amber) 66.6% 100%);
+}
+.brand img { height: 88px; width: auto; display: block; }
+a.brand:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+
+/* ----- Menú principal ----- */
+.bar nav { display: flex; gap: .35rem; }
+.bar nav a {
+  color: var(--ink); text-decoration: none; font-weight: 600;
+  padding: .45rem .85rem; border-radius: 999px;
+  transition: background .15s ease, color .15s ease;
+}
+.bar nav a:hover { background: color-mix(in srgb, var(--navy) 10%, transparent); color: var(--navy); }
+
+
+/* =============================================================================
+   5. BOTONES Y ETIQUETAS
+   ========================================================================== */
+.actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.6rem; }
+.btn { display: inline-block; padding: .7rem 1.2rem; border-radius: 999px; font-weight: 600; text-decoration: none; border: 2px solid var(--navy); transition: transform .15s ease; }
+.btn:hover { transform: translateY(-1px); }
+.btn.fill { background: var(--navy); color: var(--paper); }
+.btn.line { color: var(--navy); }
+
+.tags { display: flex; flex-wrap: wrap; gap: .5rem; list-style: none; padding: 0 !important; margin: 0; }
+.tags li { font-size: .85rem; border: 1px solid var(--line); border-radius: 999px; padding: .1rem .7rem; color: var(--muted); }
+
+/* Texto pequeño en mayúsculas sobre los títulos */
+.kicker { margin: 0 0 .5rem; font-size: .8rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+
+/* Colores de proyecto (se usan en SVG con fill y en HTML con background) */
+.c-blue  { fill: var(--blue);  background: var(--blue); }
+.c-green { fill: var(--green); background: var(--green); }
+.c-amber { fill: var(--amber); background: var(--amber); }
+
+
+/* =============================================================================
+   6. HERO + MAPA SVG
+   ========================================================================== */
+.hero { display: grid; grid-template-columns: 1.05fr 1fr; gap: 2rem; align-items: center; padding-block: 2.5rem 3rem; }
+.hero h1 { font-size: clamp(2.3rem, 5.2vw, 3.7rem); font-weight: 700; color: var(--navy); letter-spacing: -.02em; }
+.hero p { max-width: 34rem; color: var(--muted); font-size: 1.15rem; }
+.hero .kicker { font-size: .8rem; }
+
+.graph { width: 100%; height: auto; }
+.graph a { cursor: pointer; }
+.graph .edge { stroke: var(--line); stroke-width: 2.5; stroke-dasharray: 300; stroke-dashoffset: 300; animation: draw 1s ease-out .2s forwards; }
+.graph .sat { opacity: .55; }
+.graph text { fill: var(--ink); font: 600 15px 'Figtree', sans-serif; }
+.graph circle.node { transition: stroke-width .15s ease; }
+.graph a:hover circle.node, .graph a:focus-visible circle.node { stroke: var(--navy); stroke-width: 4; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+
+
+/* =============================================================================
+   7. SECCIONES COMUNES
+   ========================================================================== */
+.section { padding-block: 3.5rem; border-top: 1px solid var(--line); }
+.sec-head h2, .page h1 { font-size: clamp(1.7rem, 3.5vw, 2.3rem); color: var(--navy); }
+.sec-head h2 { margin-bottom: 1rem; }
+
+/* Texto que viene de Markdown */
+.prose { color: var(--muted); max-width: 40rem; }
+.prose p { margin: 0 0 1rem; }
+.prose strong { color: var(--ink); }
+.prose h2 { color: var(--ink); }
+
+
+/* =============================================================================
+   8. NOSOTROS (texto + cifras)
+   ========================================================================== */
+.split { display: grid; grid-template-columns: 1.4fr 1fr; gap: 2.5rem; align-items: center; }
+.stats { display: grid; gap: .8rem; margin: 0; }
+.stat {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--surface); border-radius: var(--radius);
+  padding: 1rem 1.25rem; box-shadow: var(--shadow);
+  border-left: 6px solid var(--accent);
+}
+.stat dt { color: var(--muted); font-weight: 600; }
+.stat dd { margin: 0; font: 700 2rem/1 'Bricolage Grotesque', sans-serif; color: var(--navy); }
+.stat-blue  { --accent: var(--blue); }
+.stat-green { --accent: var(--green); }
+.stat-amber { --accent: var(--amber); }
+
+
+/* =============================================================================
+   9. PROYECTOS (lista)
+   ========================================================================== */
+.rows { margin-top: .5rem; }
+.row { display: grid; grid-template-columns: 18px 1fr auto; gap: 1rem; padding: 1.5rem .5rem; border-top: 1px solid var(--line); text-decoration: none; color: var(--ink); border-radius: 8px; transition: background .15s ease; }
+.row:last-child { border-bottom: 1px solid var(--line); }
+.row:hover { background: color-mix(in srgb, var(--navy) 5%, transparent); }
+.row .dot { width: 14px; height: 14px; border-radius: 50%; margin-top: .55rem; }
+.row h3 { font-size: 1.45rem; margin-bottom: .25em; color: var(--navy); }
+.row:hover h3 { text-decoration: underline; text-underline-offset: 5px; }
+.row p { margin: 0 0 .7rem; color: var(--muted); max-width: 44rem; }
+.row-arrow { align-self: center; font-size: 1.4rem; color: var(--muted); transition: transform .15s ease; }
+.row:hover .row-arrow { transform: translateX(4px); color: var(--navy); }
+
+
+/* =============================================================================
+   10. CÓMO TRABAJAMOS (tarjetas)
+   ========================================================================== */
+.cards { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+.card {
+  background: var(--surface); border-radius: var(--radius); padding: 1.5rem;
+  box-shadow: var(--shadow); border-top: 5px solid var(--accent);
+}
+.card h3 { font-size: 1.35rem; color: var(--navy); margin-bottom: .4em; }
+.card p { margin: 0; color: var(--muted); }
+.card-num { display: inline-block; font: 700 .85rem/1 'Bricolage Grotesque', sans-serif; color: #10283D; background: var(--accent); padding: .35rem .55rem; border-radius: 999px; margin-bottom: 1rem; }
+.card-blue  { --accent: var(--blue); }
+.card-green { --accent: var(--green); }
+.card-amber { --accent: var(--amber); }
+
+
+/* =============================================================================
+   11. CONTACTO (tarjeta GitHub)
+   ========================================================================== */
+.contact { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2.5rem; align-items: center; }
+.gh-card {
+  display: flex; align-items: center; gap: 1rem;
+  background: #10283D; color: #FFFFFF; text-decoration: none;
+  border-radius: var(--radius); padding: 1.4rem 1.5rem;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--line);            /* la separa del fondo en modo oscuro */
+  transition: transform .2s ease;
+}
+.gh-card:hover { transform: translateY(-3px); }
+.gh-icon { flex: none; }
+.gh-text { display: grid; gap: .15rem; min-width: 0; }
+.gh-text strong { font-size: 1.1rem; }
+.gh-text span { color: #9FB2C4; font-size: .95rem; overflow-wrap: anywhere; }
+.gh-arrow { margin-left: auto; font-size: 1.5rem; color: var(--amber); }
+
+
+/* =============================================================================
+   12. PÁGINAS INTERNAS (proyecto e integrantes)
+   ========================================================================== */
+.page { padding-block: 2.5rem 4rem; max-width: 44rem; }
+.page .lead { font-size: 1.2rem; color: var(--muted); }
+.page .meta { margin: 0 0 .8rem; }
+.page h2 { font-size: 1.4rem; margin-top: 2rem; }
+.page ul { padding-left: 1.2rem; }
+.page .prose { margin-top: 2rem; max-width: none; }
+.back { display: inline-block; margin-bottom: 1.5rem; font-weight: 600; text-decoration: none; }
+.back:hover { text-decoration: underline; }
+.badge { display: inline-block; width: 14px; height: 14px; border-radius: 50%; margin-right: .5rem; vertical-align: middle; }
+
+/* Lista de equipo */
+.team { list-style: none; padding: 0 !important; }
+.team li { padding: .8rem 0; border-top: 1px solid var(--line); }
+.team strong { display: block; }
+.team .role { color: var(--muted); }
+.team .bio p { margin: .3rem 0 0; }
+
+
+/* =============================================================================
+   13. PIE DE PÁGINA
+   ========================================================================== */
+.site-footer { border-top: 1px solid var(--line); margin-top: 2rem; }
+.foot { display: grid; grid-template-columns: 1fr auto; gap: 1rem 2rem; align-items: center; padding-block: 2rem; color: var(--muted); font-size: .9rem; }
+.foot-brand { display: flex; align-items: center; gap: 1rem; }
+.foot-brand p { margin: 0; }
+.brand-sm { padding: 6px 10px 9px; }
+.brand-sm img { height: 44px; }
+.foot-links { display: flex; flex-wrap: wrap; gap: 1rem; }
+.foot-links a { color: var(--ink); text-decoration: none; font-weight: 600; }
+.foot-links a:hover { color: var(--navy); text-decoration: underline; }
+.foot-copy { grid-column: 1 / -1; margin: 0; }
+
+
+/* =============================================================================
+   14. RESPONSIVE Y MOVIMIENTO REDUCIDO
+   ========================================================================== */
+@media (max-width: 800px) {
+  .hero, .split, .contact { grid-template-columns: 1fr; }
+  .graph { max-width: 420px; margin: 0 auto; }
+  .foot { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  /* En móvil: la cabecera deja de ser fija (ocuparía mucha pantalla),
+     logo arriba y menú debajo, desplazable si no cabe */
+  .site-header { position: static; }
+  .bar { flex-direction: column; align-items: flex-start; gap: .6rem; }
+  .brand img { height: 68px; }
+  .bar nav { width: 100%; flex-wrap: wrap; margin-inline: -.85rem; }
+  .bar nav a { white-space: nowrap; padding: .3rem .7rem; }
+  html { scroll-padding-top: 1rem; }
+  .row { grid-template-columns: 18px 1fr; }
+  .row-arrow { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .graph .edge { animation: none; stroke-dashoffset: 0; }
+  html { scroll-behavior: auto; }
+  .brand, .btn, .gh-card, .row-arrow { transition: none; }
+}

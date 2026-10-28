@@ -1,0 +1,30 @@
+---
+// =============================================================================
+// PÁGINA DE INICIO  ( / )
+// -----------------------------------------------------------------------------
+// Solo ordena las secciones; cada una vive en src/components/inicio/.
+// Para mover, quitar o agregar una sección, cambia el orden aquí abajo.
+//   1. Hero ........... portada con mapa de proyectos
+//   2. Nosotros ....... quiénes somos  (secciones/nosotros.md)
+//   3. Proyectos ...... lista de proyectos (proyectos/*.md)
+//   4. Principios ..... cómo trabajamos (secciones/principios.md)
+//   5. Contacto ....... enlace a GitHub (secciones/contacto.md)
+// =============================================================================
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import Hero from '../components/inicio/Hero.astro';
+import Nosotros from '../components/inicio/Nosotros.astro';
+import ListaProyectos from '../components/inicio/ListaProyectos.astro';
+import Principios from '../components/inicio/Principios.astro';
+import Contacto from '../components/inicio/Contacto.astro';
+
+// Proyectos ordenados por el campo `orden` de su Markdown
+const proyectos = (await getCollection('proyectos')).sort((a, b) => a.data.orden - b.data.orden);
+---
+<Base title="KBS | Sistemas Basados en el Conocimiento">
+  <Hero proyectos={proyectos} />
+  <Nosotros />
+  <ListaProyectos proyectos={proyectos} />
+  <Principios />
+  <Contacto />
+</Base>

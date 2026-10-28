@@ -1,0 +1,35 @@
+---
+// =============================================================================
+// PIE DE PÁGINA
+// -----------------------------------------------------------------------------
+// Repite el logo, el nombre del grupo y el enlace de contacto (GitHub).
+// El enlace se toma de src/content/secciones/contacto.md para que haya
+// una sola fuente: si cambias la URL allí, cambia también aquí.
+// =============================================================================
+import { getEntry } from 'astro:content';
+import { url } from '../../lib/url';
+import { MENU, SITIO } from '../../config/sitio';
+
+const contacto = await getEntry('secciones', 'contacto');
+const github = contacto?.data.enlace;
+const anio = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="wrap foot">
+    <!-- ----- Marca ----- -->
+    <div class="foot-brand">
+      <span class="brand brand-sm">
+        <img src={url('/logo-transparente.png')} alt="" width="640" height="356" loading="lazy" />
+      </span>
+      <p>Grupo de investigación {SITIO.nombreCompleto} ({SITIO.nombre})</p>
+    </div>
+
+    <!-- ----- Enlaces rápidos ----- -->
+    <nav class="foot-links" aria-label="Pie de página">
+      {MENU.map((item) => <a href={url(item.href)}>{item.texto}</a>)}
+      {github && <a href={github.url} rel="noopener" target="_blank">GitHub</a>}
+    </nav>
+
+    <p class="foot-copy">© {anio} {SITIO.nombre}</p>
+  </div>
+</footer>

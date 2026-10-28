@@ -1,0 +1,28 @@
+---
+// =============================================================================
+// SECCIÓN 3 · PROYECTOS
+// Lista de proyectos tomada de src/content/proyectos/*.md
+// =============================================================================
+import type { CollectionEntry } from 'astro:content';
+import TituloSeccion from '../comunes/TituloSeccion.astro';
+import { url } from '../../lib/url';
+
+interface Props { proyectos: CollectionEntry<'proyectos'>[] }
+const { proyectos } = Astro.props;
+---
+<section id="proyectos" class="section" aria-labelledby="proyectos-titulo">
+  <TituloSeccion id="proyectos-titulo" titulo="Proyectos del período" etiqueta="Proyectos" />
+  <div class="rows">
+    {proyectos.map((p) => (
+      <a class="row" href={url(`/proyectos/${p.id}/`)}>
+        <span class={`dot c-${p.data.color}`}></span>
+        <div>
+          <h3>{p.data.titulo}</h3>
+          <p>{p.data.resumen}</p>
+          <ul class="tags">{p.data.etiquetas.map((t) => <li>{t}</li>)}</ul>
+        </div>
+        <span class="row-arrow" aria-hidden="true">→</span>
+      </a>
+    ))}
+  </div>
+</section>
